@@ -1,51 +1,43 @@
+// taskManagement
+// 6AcwVmt6rKCiuiQN
+const express = require('express');
+const app = express();
+require('dotenv').config();
+const connectDB = require('./src/database/connectDB');
+const port = process.env.PORT || 5000;
+const allTask = require('./src/routes/routes')
+const postTask = require('./src/routes/routes');
+const updateTask = require('./src/routes/routes');
+const deleteTask = require('./src/routes/routes');
+const editTask = require('./src/routes/routes');
+const connectMiddleware = require('./src/middleware/middleware');
+
+connectMiddleware(app);
+app.use(allTask);
+app.use(postTask);
+app.use(updateTask);
+app.use(deleteTask);
+app.use(editTask);
 
 
+app.get('/health', (req, res) => {
+    res.send('Server is good');
+})
 
-const express = require('express')
-const app = express()
-const port = 3000
+app.all('*', (req, res, next) => {
+    const error = new Error(`Invalid url: [${req.url}]`)
+    error.status = 404;
+    next(error)
+})
 
+app.use((err, req, res, next) => {
+    res.status(err.status || 5000).json({ message: err.message });
+})
 
-
-
-
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://<username>:<password>@cluster0.mtnypra.mongodb.net/?retryWrites=true&w=majority";
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
+const final = async () => {
+    await connectDB();
+    app.listen(port, () => {
+        console.log(`Server running at localhost: ${port}`);
+    })
 }
-run().catch(console.dir);
-
-
-
-
-
-
-
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+final();
