@@ -3,9 +3,9 @@
 const express = require('express');
 const app = express();
 require('dotenv').config();
-const connectDB = require('./src/database/connectDB');
+const connectDB = require('./Src/Api/Databages/ContectDB.JS');
 const port = process.env.PORT || 5000;
-const allTask = require('./src/routes/routes')
+const allTask = require('./Src/Api/Route/')
 const postTask = require('./src/routes/routes');
 const updateTask = require('./src/routes/routes');
 const deleteTask = require('./src/routes/routes');

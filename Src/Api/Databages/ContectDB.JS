@@ -2,10 +2,11 @@ const mongoose = require('mongoose');
 // require('dotenv').config();
 
 const connectURL = () => {
-    const uri = "mongodb+srv://taskManagement:6AcwVmt6rKCiuiQN@shimulclaster1.85diumq.mongodb.net/?retryWrites=true&w=majority";
+    const uri = "mongodb+srv://taskmanager:taskmanager123@cluster0.mtnypra.mongodb.net/?retryWrites=true&w=majority";
 
     return uri;
 }
+
 
 // ? here is the connection of mongodb bro yo yo
 const connectDB = async () => {
